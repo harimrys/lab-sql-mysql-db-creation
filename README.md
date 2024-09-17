@@ -235,3 +235,89 @@ git push origin master
 - [MySQL Reference: INSERT Syntax](https://dev.mysql.com/doc/refman/8.0/en/insert.html)
 - [MySQL Reference: UPDATE Syntax](https://dev.mysql.com/doc/refman/8.0/en/update.html)
 - [MySQL Reference: DELETE Syntax](https://dev.mysql.com/doc/refman/8.0/en/delete.html)
+
+
+CREATE DATABASE IF NOT EXISTS lab_mysql;
+
+USE lab_mysql;
+
+DROP TABLE IF EXISTS cars;
+
+CREATE TABLE cars ( 
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	vin VARCHAR(20) NOT NULL, 
+	fabricante VARCHAR(50) NOT NULL,
+ 	model VARCHAR(50) NOT NULL, 
+	car_year YEAR NOT NULL, 
+	color VARCHAR(20) NOT NULL
+	);
+ 
+ DROP TABLE IF EXISTS customers;
+ 
+ CREATE TABLE customers (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	cust_id INT NOT NULL, 
+	cust_name VARCHAR(50) NOT NULL, 
+	cust_phone VARCHAR(50),
+ 	cust_email VARCHAR(50), 
+	cust_address VARCHAR(50) NOT NULL, 
+	cust_city VARCHAR(50), 
+ 	cust_state VARCHAR(50), 
+	cust_country VARCHAR(50), 
+	cust_zipcode INT USIGNED NOT NULL,
+    CONSTRAINT unique_cust_id UNIQUE (cust_id)
+	);
+ 
+ DROP TABLE IF EXISTS salespersons;
+ 
+ CREATE TABLE salespersons (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	staff_id INT NOT NULL, 
+	name VARCHAR(50) NOT NULL, 
+	store VARCHAR(50), NOT NULL,
+    CONSTRAINT unique_staff_id UNIQUE (staff_id)
+	);
+ 
+ DROP TABLE IF EXISTS invoices;
+ 
+ CREATE TABLE invoices (
+	invoice_number VARCHAR(20) NOT NULL, 
+	date DATE NOT NULL, 
+	id_cars INT UNSIGNED NOT NULL, 
+	id_cust INT UNSIGNED NOT NULL,  
+	id_sales INT UNSIGNED NOT NULL,
+ 	CONSTRAINT fk_car_id FOREIGN KEY (id_cars) REFERENCES cars(id),
+ 	CONSTRAINT fk_customer_id FOREIGN KEY (id_cust) REFERENCES customers(id),
+    CONSTRAINT fk_salesperson_id FOREIGN KEY (id_sales) REFERENCES salespersons(id),
+    CONSTRAINT unique_invoice_number UNIQUE (invoice_number)
+ 	);
+ 
+
+ INSERT INTO customers (id, id_cliente, cust_name, cust_phone, cust_email, cust_address, cust_city, cust_state, cust_country, cust_zipcode)
+VALUES (0, 10001, "Pablo Picasso", "+34 636 17 63 82", "-", "Paseo de la Chopera, 14", "Madrid",	"Madrid", "España", 28045), 
+       (1, 20001, "Abraham Lincoln", "+1 305 907 7086",	"-", "120 SW Calle 8", "Miami", "Florida", "Estados Unidos", 33130),
+       (2, 30001, "Napoleón Bonaparte", "+33 1 79 75 40 00", "-", "40 Calle del Coliseo", "París", "Isla de Francia", "Francia", 75008);
+
+INSERT INTO cars (id, vin, fabricante, model, year, color)
+VALUES (1, "3K096I98581DHSNUP", "Volkswagen", "Tiguan", 2019, "Blue"),
+	   (2, "ZM8G7BEUQZ97IH46V", "Peugeot",	"Rifter", 2019, "Red"),
+       (3, "RKXVNNIHLVVZOUB4M",	"Ford",	"Fusion", 2018, "White"),
+	   (4, "HKNDGS7CU31E9Z7JW",	"Toyota", "RAV4", 2018, "Silver"),
+       (5, "DAM41UDN3CHU2WVF6",	"Volvo", "V60",	2019, "Gray"),
+       (6, "DAM41UDN3CHU2WVF6",	"Volvo", "V60 Cross", 2019, "Gray");
+ 
+ INSERT INTO salespersons (id, staff_id, name, store)
+ VALUES (1, 00001, "Crucero Petey",	"Madrid"),
+		(2,	00002, "Ana Estesia", "Barcelona"),
+		(3,	00003, "Pablo Molive", "Berlina"),
+		(4,	00004, "Gail Viento de Fuerza",	"París2"),
+		(5, 00005, "Paige Turner", "Mimia"),
+		(6, 0006, "Bob Frapples", "Ciudad de México"),
+		(7, 00007, "Walter Melón", "Ámsterdam"),
+		(8, 00008, "Shonda Leer", "San Pablo");
+ 
+INSERT INTO invoices ()
+VALUES (1, "852399038",	"22-08-2018", 1, 1,	3),
+	   (2, "731166526", "31-12-2018", 3, 3, 5),
+	   (3, "271135104", "22-01-2019", 2, 2, 7);
+
